@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.demo.Service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Dao.UserDao;
@@ -8,13 +11,17 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
+
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Transactional
     @Override
@@ -24,8 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User getUser(long id) {
-        return userDao.getUser(id);
+    public User getUserById(long id) {
+        return userDao.getUserById(id);
     }
 
     @Transactional
@@ -42,7 +49,34 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(long id, User user) {
-        userDao.update(id, user);
+    public void update(User user) {
+        userDao.update(user);
+    }
+
+    @Transactional
+    @Override
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.getUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Юзер не найден");
+        }
+        return user;
     }
 }
+
+//    @Transactional
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user =  userDao.getUserByUsername(username);
+//        if (user == null) {
+//            throw new UsernameNotFoundException("Юзер не найден");
+//        }
+//        return user;
+//    }
+

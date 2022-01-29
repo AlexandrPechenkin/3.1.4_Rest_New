@@ -10,7 +10,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext(unitName = "entityManagerFactory")
@@ -22,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(long id) {
+    public User getUserById(long id) {
         TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id = :id", User.class);
         query.setParameter("id", id);
         return query.getResultList().stream().findAny().orElse(null);
@@ -35,15 +34,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void remove(long id) {
-        User user = getUser(id);
+        User user = getUserById(id);
         entityManager.remove(user);
     }
 
     @Override
-    public void update(long id, User user) {
-        User userUpdate = getUser(id);
-        userUpdate.setName(user.getName());
-        userUpdate.setLastname(user.getLastname());
-        userUpdate.setEmail(user.getEmail());
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    public User getUserByUsername(String name) {
+        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.name = :name", User.class);
+        query.setParameter("name", name);
+        return query.getResultList().stream().findAny().orElse(null);
     }
 }
