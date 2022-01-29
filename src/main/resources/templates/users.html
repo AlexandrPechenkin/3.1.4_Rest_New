@@ -20,14 +20,14 @@
             <td th:utext="${user.getName()}">...</td>
             <td th:utext="${user.getLastname()}">...</td>
             <td>
-                <a th:href="@{/users/edit/{id}(id=${user.getId()})}">Edit </a>
+                <a th:href="@{/admin/users/edit/{id}(id=${user.getId()})}">Edit </a>
                 <br>
-                <a th:href="@{/users/{id}(id=${user.getId()})}">Information </a>
+                <a th:href="@{/admin/users/{id}(id=${user.getId()})}">Information </a>
             </td>
         </tr>
     </table>
     <br>
-    <a href="/users/new">New user</a>
+    <a href="/admin/users/new">New user</a>
     <br>
     <br>
 

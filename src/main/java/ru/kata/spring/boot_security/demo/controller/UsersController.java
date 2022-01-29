@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 
 @Controller
-@RequestMapping("/users")
 public class UsersController {
 
     private final UserService userService;
@@ -18,7 +17,7 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping("/admin/users")
     public String users(Model model) {
 
         model.addAttribute("users", userService.getAll());
@@ -26,13 +25,13 @@ public class UsersController {
         return "users";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/users/{id}")
     public String showUser(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "show";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/admin/users/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "new";
     }
@@ -40,30 +39,33 @@ public class UsersController {
     @PostMapping()
     public String create(@ModelAttribute("user") User user) {
         userService.addUser(user);
-        return "redirect:/users";
+        return "redirect:/admin/users";
 
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/users/edit/{id}")
     public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.getUserById(id));
         return "edit";
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/admin/users/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
         userService.update(user);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/users/{id}")
     public String delete(@PathVariable("id") long id) {
         userService.remove(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        return "<h1> Welcome Admin<h1>";
+    @GetMapping("/user/{id}")
+    public String user(@PathVariable("id") long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "user";
     }
+
+
 }
