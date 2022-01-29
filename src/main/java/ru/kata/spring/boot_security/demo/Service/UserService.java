@@ -12,9 +12,6 @@ public interface UserService {
     void remove(long id);
     void update(User user);
     User getUserByUsername(String name);
-    //детеил импл
-    //в юзер дао написать метод доставать по логину
-    //создать сервис наслед от юзерсервис импл
-    //переопр метод метод юзердетеилсервис
+
 
 }

@@ -19,9 +19,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.userDao = userDao;
     }
 
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Transactional
     @Override
@@ -70,13 +67,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 }
 
-//    @Transactional
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user =  userDao.getUserByUsername(username);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("Юзер не найден");
-//        }
-//        return user;
-//    }
 
