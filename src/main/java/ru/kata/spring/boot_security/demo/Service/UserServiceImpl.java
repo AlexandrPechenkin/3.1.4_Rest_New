@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Dao.UserDao;
@@ -18,7 +19,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
-
 
     @Transactional
     @Override

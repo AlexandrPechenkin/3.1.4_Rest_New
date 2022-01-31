@@ -1,39 +1,88 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>New User</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<form th:method="POST" th:action="@{/admin/users}" th:object="${user}">-->
+
+<!--    <div>-->
+
+<!--        <label for="name">Name: </label>-->
+<!--        <input type="text" th:field="*{name}" id="name"/>-->
+
+<!--        <br/>-->
+
+<!--        <label for="lastname">LastName: </label>-->
+<!--        <input type="text" th:field="*{lastname}" id="lastname"/>-->
+
+<!--        <br>-->
+
+<!--        <label for="email">Email: </label>-->
+<!--        <input type="text" th:field="*{email}" id="email"/>-->
+
+<!--        <br>-->
+
+<!--        <label for="password">Password: </label>-->
+<!--        <input type="text" th:field="*{password}" id="password"/>-->
+
+
+<!--        <br>-->
+<!--        -->
+
+<!--        <br/>-->
+
+<!--        <input type="submit" value="Create!"/>-->
+
+<!--    </div>-->
+
+<!--</form>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>New User</title>
+    <meta charset="UTF-8">
+    <title>User Add</title>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
-
-  <div>
-
+<form th:method="PATCH" th:action="@{/admin/users}" th:object="${user}">
     <label for="name">Name: </label>
     <input type="text" th:field="*{name}" id="name"/>
-
     <br/>
-
-    <label for="lastname">LastName: </label>
+    <label for="lastname">Lastname: </label>
     <input type="text" th:field="*{lastname}" id="lastname"/>
-
-    <br>
-
+    <br/>
     <label for="email">Email: </label>
     <input type="text" th:field="*{email}" id="email"/>
-
-    <br>
-
-
+    <br/>
+    <label for="password">Password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
     <br/>
 
-    <input type="submit" value="Create!"/>
+    <form th:action="@{/admin/users}" th:method="PATCH">
+        <tr th:each="role, state : ${role}"
+            class="row" th:classappend="${state.odd}">
+            <label th:text="${role.getName()}" for="roleId"></label>
+            <input type="checkbox" id="roleId" name="roleId" th:value="${role.getId}"/>
+            <br/>
+        </tr>
+        <input type="submit" value="Create">
 
-  </div>
+    </form>
 
-</form>
+
 
 
 </body>
+
 </html>
