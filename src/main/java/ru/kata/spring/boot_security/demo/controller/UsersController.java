@@ -63,7 +63,13 @@ public class UsersController {
     }
 
     @PatchMapping("/admin/users/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id,
+                         @RequestParam(name = "roleId") long[] roleId) {
+        Set<Role> role = new HashSet<>();
+        for (Long idRole : roleId) {
+            role.add(roleService.getRole(idRole));
+        }
+        user.setRoles(role);
         userService.update(user);
         return "redirect:/admin/users";
     }

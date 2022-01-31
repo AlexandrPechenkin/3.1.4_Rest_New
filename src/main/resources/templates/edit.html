@@ -29,14 +29,21 @@
 
     <br/>
 
-    <input type="submit" value="Update!"/>
+    <form th:action="@{/admin/update/{id}(id=${user.getId()})}" th:method="PATCH">
+        <label for="userId">USER</label>
+        <input type="checkbox" id="userId" name="roleId" value="1"/>
+        <br/>
+        <label for="adminId">ADMIN</label>
+        <input type="checkbox" id="adminId" name="roleId" value="2"/>
+        <br/>
 
-    <br/>
+
+        <input type="submit" value="Update!"/>
+
+        <br/>
 
 
-
-
-</form>
+    </form>
 
 
 </body>
