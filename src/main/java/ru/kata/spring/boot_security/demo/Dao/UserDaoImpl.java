@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.Dao;
 
+
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -11,8 +12,11 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
+
+
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
+
 
     @Override
     public List<User> getAll() {

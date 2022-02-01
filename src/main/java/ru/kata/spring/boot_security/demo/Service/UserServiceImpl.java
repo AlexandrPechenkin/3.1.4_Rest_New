@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Dao.UserDao;
@@ -13,12 +14,14 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-
+    private final PasswordEncoder passwordEncoder;
     private final UserDao userDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Transactional
     @Override
@@ -26,7 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userDao.getAll();
     }
 
-    @Transactional
     @Override
     public User getUserById(long id) {
         return userDao.getUserById(id);
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.addUser(user);
     }
 
@@ -50,7 +53,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDao.update(user);
     }
 
-    @Transactional
     @Override
     public User getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
