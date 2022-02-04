@@ -9,13 +9,13 @@
 <form th:method="PATCH" th:action="@{/admin/users/{id}(id=${user.getId()})}" th:object="${user}">
 
 
-    <label for="name">Name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
+    <label for="firstName">FirstName: </label>
+    <input type="text" th:field="*{firstName}" id="firstName"/>
 
     <br/>
 
-    <label for="lastname">LastName: </label>
-    <input type="text" th:field="*{lastname}" id="lastname"/>
+    <label for="lastName">LastName: </label>
+    <input type="text" th:field="*{lastName}" id="lastName"/>
 
     <br>
 
@@ -28,6 +28,9 @@
     <input type="text" th:field="*{password}" id="password"/>
 
     <br/>
+
+    <label for="age">Age: </label>
+    <input type="text" th:field="*{age}" id="age"/>
 
     <form th:action="@{/admin/update/{id}(id=${user.getId()})}" th:method="PATCH">
         <label for="userId">USER</label>

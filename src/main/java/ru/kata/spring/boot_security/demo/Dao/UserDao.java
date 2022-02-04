@@ -10,5 +10,5 @@ public interface UserDao {
     void addUser(User user);
     void remove(long id);
     void update(User user);
-    User getUserByUsername(String name);
+    User getUserByUsername(String email);
 }

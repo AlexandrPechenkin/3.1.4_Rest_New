@@ -17,8 +17,9 @@
         </tr>
         <tr th:each="user : ${users}">
             <td th:utext="${user.getId()}">...</td>
-            <td th:utext="${user.getName()}">...</td>
-            <td th:utext="${user.getLastname()}">...</td>
+            <td th:utext="${user.getFirstName()}">...</td>
+            <td th:utext="${user.getLastName()}">...</td>
+
             <td>
                 <a th:href="@{/admin/users/edit/{id}(id=${user.getId()})}">Edit </a>
                 <br>

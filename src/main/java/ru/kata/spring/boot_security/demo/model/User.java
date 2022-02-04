@@ -16,11 +16,14 @@ public class User implements UserDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstName")
+    private String firstName;
 
-    @Column(name = "lastname")
-    private String lastname;
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column
+    private byte age;
 
     @Column(name = "email")
     private String email;
@@ -36,9 +39,17 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String lastname, String email, String password) {
-        this.name = name;
-        this.lastname = lastname;
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String firstName, String lastName, byte age, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
     }
@@ -51,20 +62,28 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public byte getAge() {
+        return age;
+    }
+
+    public void setAge(byte age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -100,7 +119,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -121,5 +140,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getRoleUser() {
+        Set<Role> role = roles;
+        StringBuilder roles = new StringBuilder();
+        for (Role r : role) {
+            roles.append(r.getName());
+            roles.append(" ");
+        }
+        return roles.toString();
     }
 }
