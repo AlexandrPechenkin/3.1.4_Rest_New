@@ -1,33 +1,39 @@
 package ru.kata.spring.boot_security.demo.Service;
 
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.Dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleDao roleDao;
+    private final RoleRepository roleRepository;
 
-    public RoleServiceImpl(RoleDao roleDao) {
-        this.roleDao = roleDao;
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
+
     @Override
-    public Role getRole(long id) {
-        return roleDao.getOne(id);
+    public Role getOne(long id) {
+        return roleRepository.getById(id);
     }
 
     @Override
     public List<Role> getAll() {
-        return roleDao.getAll();
+        return roleRepository.findAll();
     }
 
     @Override
     public HashSet<Role> getSetOfRoles(long[] roleId) {
-        return roleDao.getSetOfRoles(roleId);
+        Set<Role> role = new HashSet<>();
+        for (Long id : roleId) {
+            role.add(getOne(id));
+        }
+        return (HashSet) role;
     }
 }

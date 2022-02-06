@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface RoleService {
-    Role getRole(long id);
+    Role getOne(long id);
     List<Role> getAll();
     HashSet<Role> getSetOfRoles(long[] roleId);
 }

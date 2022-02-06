@@ -22,7 +22,7 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
             httpServletResponse.sendRedirect("/admin/users");
         } else if (roles.contains("ROLE_USER")) {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            httpServletResponse.sendRedirect("/user/" + user.getId());
+            httpServletResponse.sendRedirect("/user/");
         } else {
             httpServletResponse.sendRedirect("/");
         }
