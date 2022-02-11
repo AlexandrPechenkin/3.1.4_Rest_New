@@ -12,5 +12,4 @@ public interface UserService {
     User getUserByEmail(String email);
     User getOne(long id);
 
-
 }
