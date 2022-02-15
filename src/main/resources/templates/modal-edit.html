@@ -1,4 +1,4 @@
-<form th:method="POST" th:action="@{newuser}">
+<form class="formEditUser">
     <div class="form-group col-lg-6 mx-auto  text-center">
         <label for="idEdit" class="form-control-label">Id: </label>
         <input class="form-control w-1 p-1 h-25" type="text" name="id" readonly
@@ -34,11 +34,9 @@
                id="passwordEdit"/>
     </div>
     <div class="form-group col-lg-6 mx-auto  text-center overflow-scroll">
-        <label for="select" class="form-control-label">Role: </label>
-        <select class="form-select" multiple id="select" name="roleId" size="2">
-            <!--/*@thymesVar id="role" type="ru.kata.spring.boot_security.demo.model.Role"*/-->
-            <option th:each="role : ${role}" th:value="${role.id}"
-                    th:text="${role.name}"></option>
+        <label for="selector" class="form-control-label">Role: </label>
+        <select class="form-control roles" multiple id="selector"
+                name="roleId" size="2">
         </select>
     </div>
     <br/>
@@ -46,7 +44,7 @@
         <button type="button" class="btn btn-secondary"
                 data-bs-dismiss="modal">Close
         </button>
-        <button type="submit" class="btn btn-primary">Edit
+        <button type="button" class="btn btn-primary editUser">Edit
         </button>
     </div>
 </form>

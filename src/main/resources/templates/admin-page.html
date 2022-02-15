@@ -19,7 +19,7 @@
 <body>
 <nav class="navbar navbar-dark bg-dark w-1 p-1 h-25">
     <div class="container">
-        <p class="navbar-brand" th:text="${user.email} + ' with roles: ' + ${user.getRoleUser()}"></p>
+        <p class="navbar-brand" th:text="${user.email} + ' with roles: ' + ${user.roleUser}"></p>
         <a href="/logout" class="btn btn-dark">Logout</a>
     </div>
 </nav>
@@ -44,13 +44,14 @@
                 <div class="border-white">
                     <ul class="nav nav-tabs mx-3" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                            <button class="nav-link active" id="userTable" data-bs-toggle="tab" data-bs-target="#home"
                                     type="button"
                                     role="tab" aria-controls="home" aria-selected="true">Users table
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                            <button class="nav-link addNewUser" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#profile"
                                     type="button"
                                     role="tab" aria-controls="profile" aria-selected="false">New User
                             </button>
@@ -63,10 +64,10 @@
                                 <h4 style="text-align: left; margin: 1%">All users</h4>
                             </div>
                             <div class="m-3">
-                                <table class="table table-striped" style="background-color: white">
+                                <table class="table table-striped usersTable" style="background-color: white">
                                     <thead>
                                     <tr>
-                                        <th class="mx-4">ID</th>
+                                        <th class="mx-4" scope="col">ID</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Age</th>
@@ -76,27 +77,14 @@
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr th:each="user : ${users}" th:id="${user.getRoleUser()}">
-                                        <td th:utext="${user.id}"></td>
-                                        <td th:utext="${user.firstName}"></td>
-                                        <td th:utext="${user.lastName}"></td>
-                                        <td id="age1" th:utext="${user.age}"></td>
-                                        <td th:utext="${user.email}"></td>
-                                        <td th:utext="${user.getRoleUser()}"></td>
-                                        <td><a th:href="@{/admin/edit/(id=${user.id})}"
-                                               data-bs-target="#editModal" class="btn btn-sm btn-info editBtn"
-                                               data-bs-toggle="modal">Edit</a></td>
-                                        <td><a th:href="@{/admin/edit/(id=${user.id})}"
-                                               data-bs-target="#deleteModal" class="btn btn-sm btn-danger deleteBtn"
-                                               data-bs-toggle="modal">Delete</a></td>
-                                    </tr>
+                                    <tbody id="table">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="editForm">
-                            <div class="modal fade" id="editModal" tabindex="-1"
+                            <div class="modal fade hideModal" id="editModal" tabindex="-1"
                                  aria-labelledby="editModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -115,7 +103,7 @@
                             </div>
                         </div>
                         <div class="deleteForm">
-                            <div class="modal fade" id="deleteModal" tabindex="-1"
+                            <div class="modal fade hideModal2" id="deleteModal" tabindex="-1"
                                  aria-labelledby="editModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -153,39 +141,123 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('.table .editBtn').on('click', function (event) {
-                event.preventDefault();
-                let href = $(this).attr('href');
-                $.get(href, function (user, status) {
-                    $('.editForm #idEdit').val(user.id)
-                    $('.editForm #firstNameEdit').val(user.firstName)
-                    $('.editForm #lastNameEdit').val(user.lastName)
-                    $('.editForm #ageEdit').val(user.age)
-                    $('.editForm #emailEdit').val(user.email)
-                });
-                $('.editForm #editModal').modal();
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('.table .deleteBtn').on('click', function (event) {
-                event.preventDefault();
-                let href = $(this).attr('href');
-                $.get(href, function (user, status) {
-                    $('.deleteForm #idEdit').val(user.id)
-                    $('.deleteForm #firstNameEdit').val(user.firstName)
-                    $('.deleteForm #lastNameEdit').val(user.lastName)
-                    $('.deleteForm #ageEdit').val(user.age)
-                    $('.deleteForm #emailEdit').val(user.email)
-                });
-                $('.deleteForm #deleteModal').modal();
-            });
-        });
-
-    </script>
 </div>
+
+<script>
+    // Отображение списка пользователей в таблице
+    $(document).ready(getAllUsers());
+
+    function getAllUsers() {
+        $('#table').empty();
+        $.ajax({
+            type: 'POST',
+            url: '/admin/users',
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (i, user) {
+                    $("#table").append($('<tr>').append(
+                            $('<td>').append($('<span>')).text(user.id),
+                            $('<td>').append($('<span>')).text(user.firstName),
+                            $('<td>').append($('<span>')).text(user.lastName),
+                            $('<td>').append($('<span>')).text(user.age),
+                            $('<td>').append($('<span>')).text(user.email),
+                            $('<td>').append($('<span>')).text(user.roleUser),
+                            $('<td>').append($('<button>').text('Edit').attr({
+                                "type": "button",
+                                "class": "btn btn-sm btn-info editBtn",
+                                "data-bs-toggle": "modal",
+                                "data-bs-target": "#editModal",
+                            }).data("user", user)),
+                            $('<td>').append($('<button>').text('Delete').attr({
+                                "type": "button",
+                                "class": "btn btn-sm btn-danger deleteBtn",
+                                "data-bs-toggle": "modal",
+                                "data-bs-target": "#deleteModal",
+                            })
+                                .data("user", user))
+                        )
+                    );
+                });
+            }
+        });
+    }
+
+    // Добавление нового юзера
+    $('.userAdd').on('click', function () {
+        $('#userTable').trigger('click');
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/add',
+            data: $(".formAddUser").serialize(),
+            success: function () {
+                getAllUsers();
+                $('.formAddUser')[0].reset()
+            }
+        })
+
+    });
+
+    // Селектор с ролями
+    $.ajax({
+        type: 'POST',
+        url: '/admin/roles',
+        success: function (data) {
+            $.each(data, function (i, role) {
+                $('.roles').append($('<option>').text(role.name).attr({
+                        "value": role.id,
+                    })
+                )
+            })
+        }
+    })
+
+    // Модальное окно обновления
+    $(document).on("click", ".editBtn", function () {
+        let user = $(this).data('user');
+        $('#idEdit').val(user.id);
+        $('#firstNameEdit').val(user.firstName);
+        $('#lastNameEdit').val(user.lastName);
+        $('#ageEdit').val(user.age);
+        $('#emailEdit').val(user.email);
+
+        $(document).on("click", ".editUser", function () {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/edit',
+                data: $(".formEditUser").serialize(),
+                success: function () {
+                    $('.hideModal').trigger('click');
+                    $('.formEditUser')[0].reset();
+                    getAllUsers();
+                }
+            });
+
+        });
+    })
+
+    //Модальное окно удаления пользователя
+    $(document).on("click", ".deleteBtn", function () {
+        let user = $(this).data('user');
+        $('#idDelete').val(user.id);
+        $('#firstNameDelete').val(user.firstName);
+        $('#lastNameDelete').val(user.lastName);
+        $('#ageDelete').val(user.age);
+        $('#emailDelete').val(user.email);
+
+        $(document).on("click", ".deleteUser", function () {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/delete',
+                data: $('#idDelete').serialize(),
+                success: function () {
+                    $('.hideModal2').trigger('click');
+                    getAllUsers();
+                }
+            });
+        });
+    })
+
+</script>
 </body>
 </html>

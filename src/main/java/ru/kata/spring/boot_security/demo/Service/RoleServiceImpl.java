@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.Service;
 
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.HashSet;
@@ -35,5 +36,14 @@ public class RoleServiceImpl implements RoleService {
             role.add(getOne(id));
         }
         return (HashSet) role;
+    }
+
+    @Override
+    public void relation(User user, long[] roleId) {
+        Set<Role> role = new HashSet<>();
+        for (Long id : roleId) {
+            role.add(getOne(id));
+        }
+        user.setRoles(role);
     }
 }
