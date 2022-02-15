@@ -151,7 +151,7 @@
         $('#table').empty();
         $.ajax({
             type: 'POST',
-            url: '/admin/users',
+            url: '/api/users',
             success: function (data) {
                 console.log(data);
                 $.each(data, function (i, user) {
@@ -188,7 +188,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/admin/add',
+            url: '/api/add',
             data: $(".formAddUser").serialize(),
             success: function () {
                 getAllUsers();
@@ -201,7 +201,7 @@
     // Селектор с ролями
     $.ajax({
         type: 'POST',
-        url: '/admin/roles',
+        url: '/api/roles',
         success: function (data) {
             $.each(data, function (i, role) {
                 $('.roles').append($('<option>').text(role.name).attr({
@@ -224,7 +224,7 @@
         $(document).on("click", ".editUser", function () {
             $.ajax({
                 type: 'POST',
-                url: '/admin/edit',
+                url: '/api/edit',
                 data: $(".formEditUser").serialize(),
                 success: function () {
                     $('.hideModal').trigger('click');
@@ -248,7 +248,7 @@
         $(document).on("click", ".deleteUser", function () {
             $.ajax({
                 type: 'POST',
-                url: '/admin/delete',
+                url: '/api/delete',
                 data: $('#idDelete').serialize(),
                 success: function () {
                     $('.hideModal2').trigger('click');
